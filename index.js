@@ -58,6 +58,15 @@ app.post('/som', (req, res) => {
   res.send(som.toString());
 });
 
+app.get('/login', (req, res) => {
+  res.send(som.toString());
+});
+
+app.post('/login', (req, res) => {
+  som = !som;
+  res.send(som.toString());
+});
+
 app.listen(3000, () => {
   console.log('A API está rodando na porta 3000.');
 });
