@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<style>
+		body {
+			background-color: #000000;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+      
+        img {
+        width: 20%;
+        height: 20%;
+        display: block;
+        margin: 0 auto;
+      }
+
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+			margin-bottom: 30px;
+			color: #ffffff;
+		}
+
+		form {
+			width: 400px;
+			margin: 0 auto;
+			background-color: #fff;
+			border-radius: 5px;
+			padding: 20px;
+			box-shadow: 0 0 10px #999;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			color: #666;
+		}
+
+		input[type="text"], input[type="password"] {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 20px;
+			border: none;
+			background-color: #f2f2f2;
+			border-radius: 3px;
+			font-size: 16px;
+			color: #333;
+		}
+
+		input[type="button"] {
+			background-color: rgb(141, 209, 236);
+			color: #fff;
+			border: none;
+			padding: 10px;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 16px;
+			width: 100%;
+		}
+
+		input[type="button"]:hover {
+			background-color: rgb(14, 169, 230);
+		}
+
+		.alert {
+			background-color: #f44336;
+			color: #fff;
+			padding: 10px;
+			margin-top: 20px;
+			text-align: center;
+			border-radius: 3px;
+			display: none;
+		}
+	</style>
+	<script type="text/javascript">
+		function validarLogin() {
+			var usuario = document.getElementById("usuario").value;
+			var senha = document.getElementById("senha").value;
+			var alerta = document.getElementById("alerta");
+
+			if (usuario === "lucas" && senha === "1234") {
+				window.location.href = "get1.html";
+			} else {
+				alerta.style.display = "block";
+			}
+		}
+	</script>
+</head>
+<body>
+    <img src="zues_Prancheta 1.png" alt="Cabeçalho">
+	<h1>Login</h1>
+	<form>
+		<label for="usuario">Usuário:</label>
+		<input type="text" id="usuario" name="usuario">
+
+		<label for="senha">Senha:</label>
+		<input type="password" id="senha" name="senha">
+
+		<input type="button" value="Entrar" onclick="validarLogin()">
+		<div class="alert" id="alerta">Usuário ou senha inválidos!</div>
+	</form>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Estado dos Botões</title>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        text-align: center;
+      }
+
+      img {
+        width: 20%;
+        height: 20%;
+        display: block;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-top: 0;
+      }
+
+      #status-button {
+        background-color: rgb(113, 186, 214);
+        border-radius: 5px;
+        color: white;
+        transition: background-color 0.5s ease;
+      }
+
+      #status-button.on {
+        background-color: rgb(14, 169, 230);
+      }
+
+      #status-button.off {
+        background-color: rgb(158, 147, 147);
+      }
+
+      #milhas-button {
+        background-color: rgb(113, 186, 214);
+        border-radius: 5px;
+        color: white;
+        transition: background-color 0.5s ease;
+      }
+
+      #milhas-button.on {
+        background-color: rgb(14, 169, 230);
+      }
+
+      #milhas-button.off {
+        background-color: rgb(158, 147, 147);
+      }
+     
+    </style>
+  </head>
+  <body>
+    <img src="zues_Prancheta 1.png" alt="Cabeçalho">
+    <h1>Estado dos Botões</h1>
+    <p id="status">Carregando status...</p>
+    <button id="status-button" class="off">LUZES</button>
+    <button id="milhas-button" class="off">MILHAS</button>
+    <p id="milhas-status">Carregando status...</p>
+    
+
+
+    
+      
+   
+    <p id="velocity-label"></p> 
+    <script>
+      const statusElement = document.getElementById('status');
+      const button = document.getElementById('status-button');
+      const velocityElement = document.getElementById('velocity-label');
+    
+let currentStatus;
+
+
+      const getStatus = async () => {
+        const response = await fetch('http://localhost:3000/statusluz');
+        currentStatus = await response.text();
+        statusElement.innerText = `O estado das luzes é: ${currentStatus}`;
+        if (currentStatus === 'ligado') {
+          button.classList.remove('off');
+          button.classList.add('on');
+        } else {
+          button.classList.remove('on');
+          button.classList.add('off');
+        }
+      };
+
+      const getVelocity = async () => {
+        const response = await fetch('http://localhost:3000/velocidade');
+        const velocity = await response.text();
+        velocityElement.innerText = `Velocidade: ${velocity} km/h`;
+      };
+
+  
+
+      button.addEventListener('click', async () => {
+        const response = await fetch('http://localhost:3000/statusluz', {
+          method: 'POST'
+        });
+        currentStatus = await response.text();
+        statusElement.innerText = `O estado das luzes é: ${currentStatus}`;
+        if (currentStatus === 'on') {
+          button.classList.remove('off');
+          button.classList.add('on');
+        } else {
+          button.classList.remove('on');
+          button.classList.add('off');
+        }
+
+        setInterval(() => {
+        window.location.reload();
+      }, 200);
+
+      });
+
+      getStatus();
+      getVelocity();
+
+      const milhasButton = document.getElementById('milhas-button');
+const milhasStatusElement = document.getElementById('milhas-status');
+
+const getMilhasStatus = async () => {
+  const response = await fetch('http://localhost:3000/milhas');
+  const milhasStatus = await response.text();
+  milhasStatusElement.innerText = `O estado das milhas é: ${milhasStatus}`;
+  if (milhasStatus === 'true') {
+    milhasButton.classList.remove('off');
+    milhasButton.classList.add('on');
+  } else {
+    milhasButton.classList.remove('on');
+    milhasButton.classList.add('off');
+  }
+};
+
+milhasButton.addEventListener('click', async () => {
+  const response = await fetch('http://localhost:3000/milhas', {
+    method: 'POST'
+  });
+  const milhasStatus = await response.text();
+  milhasStatusElement.innerText = `O estado das milhas é: ${milhasStatus}`;
+  if (milhasStatus === 'ligado') {
+    milhasButton.classList.remove('off');
+    milhasButton.classList.add('on');
+  } else {
+    milhasButton.classList.remove('on');
+    milhasButton.classList.add('off');
+  }
+  setInterval(() => {
+        window.location.reload();
+      }, 200);
+});
+
+getMilhasStatus();
+
+    </script>
+  </body>
+</html>
