@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 let statusLuz = 'desligado';
 let velocidade = 0;
-let milhas = false;
+let milhas = 'desligado';
 let radio = false;
 let som = false;
 
@@ -32,12 +32,12 @@ app.get('/velocidade', (req, res) => {
 });
 
 app.get('/milhas', (req, res) => {
-  res.send(milhas.toString());
+  res.send(milhas);
 });
 
 app.post('/milhas', (req, res) => {
-  milhas = !milhas;
-  res.send(milhas.toString());
+  milhas = (milhas === 'desligado') ? 'ligado' : 'desligado';
+  res.send(milhas);
 });
 
 app.get('/radio', (req, res) => {
