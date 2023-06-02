@@ -15,8 +15,8 @@ let radio = false;
 let som = false;
 
 // Configurações do broker MQTT
-const mqttBroker = 'mqtt://seu-broker-mqtt';
-const mqttTopic = 'topic/statusLuz';
+const mqttBroker = 'mqtt://18.231.185.171';
+const mqttTopic = 'luz';
 
 // Cria um cliente MQTT
 const client = mqtt.connect(mqttBroker);
