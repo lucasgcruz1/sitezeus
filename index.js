@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 let statusLuz = 'desligado';
 let velocidade = 0;
-let milhas = false;
+let milhas = 'desligado';
 let radio = false;
 let som = false;
 
@@ -32,6 +32,11 @@ function processMqttMessage(message) {
     statusLuz = 'ligado';
   } else if (message === 'l2') {
     statusLuz = 'desligado';
+  }
+  if (message === 'm1') {
+    milhas = 'ligado';
+  } else if (message === 'm2') {
+    milhas = 'desligado';
   }
 
   // Aqui você pode adicionar qualquer lógica adicional que desejar
@@ -63,6 +68,25 @@ app.post('/statusLuz', (req, res) => {
 
   res.send(statusLuz);
 });
+
+
+app.get('/milhas', (req, res) => {
+    res.send(milhas);
+  });
+  
+  app.post('/milhas', (req, res) => {
+    milhas = (milhas === 'desligado') ? 'ligado' : 'desligado';
+  
+    // Envia a mensagem MQTT com base no valor atualizado de statusLuz
+    if (milhas === 'ligado') {
+      publishToMqtt('l1');
+    } else {
+      publishToMqtt('l2');
+    }
+  
+    res.send(milhas);
+  });
+
 
 // Resto do seu código...
 
