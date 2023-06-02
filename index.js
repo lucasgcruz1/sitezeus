@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mqtt = require('mqtt'); // Importa a biblioteca MQTT
+const mqtt = require('mqtt');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,10 +15,8 @@ let radio = false;
 let som = false;
 
 // Configurações do broker MQTT
-
-const mqttBroker = 'mqtt://18.231.185.171';
-const mqttTopic = 'luz';
-
+const mqttBroker = 'mqtt://seu-broker-mqtt';
+const mqttTopic = 'topic/statusLuz';
 
 // Cria um cliente MQTT
 const client = mqtt.connect(mqttBroker);
@@ -27,6 +25,27 @@ const client = mqtt.connect(mqttBroker);
 function publishToMqtt(message) {
   client.publish(mqttTopic, message);
 }
+
+// Função para processar as mensagens MQTT recebidas
+function processMqttMessage(message) {
+  if (message === 'l1') {
+    statusLuz = 'ligado';
+  } else if (message === 'l2') {
+    statusLuz = 'desligado';
+  }
+
+  // Aqui você pode adicionar qualquer lógica adicional que desejar
+}
+
+// Assina o tópico MQTT para receber mensagens
+client.on('connect', () => {
+  client.subscribe(mqttTopic);
+});
+
+// Processa as mensagens MQTT recebidas
+client.on('message', (topic, message) => {
+  processMqttMessage(message.toString());
+});
 
 app.get('/statusLuz', (req, res) => {
   res.send(statusLuz);
