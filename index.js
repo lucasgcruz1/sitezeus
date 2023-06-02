@@ -104,7 +104,14 @@ function processMqttMessage(message) {
         latitude = parseFloat(numbers[0]);
         console.log(latitude);
       }
-    }
+    };
+    if (message.startsWith('long=')) {
+        const numbers = message.match(/-?\d+\.\d+/g);
+        if (numbers && numbers.length > 0) {
+          longitude = parseFloat(numbers[0]);
+          console.log(longitude);
+        }
+      };
 };
 
 app.get('/longitude', (req, res) => {
@@ -112,15 +119,9 @@ app.get('/longitude', (req, res) => {
   });
 
    // Função para processar as mensagens MQTT recebidas
-function processMqttMessage(message) {
-    if (message.startsWith('long=')) {
-      const numbers = message.match(/-?\d+\.\d+/g);
-      if (numbers && numbers.length > 0) {
-        longitude = parseFloat(numbers[0]);
-        console.log(longitude);
-      }
-    }
-};
+
+    
+
 // Resto do seu código...
 
 app.listen(3000, () => {
