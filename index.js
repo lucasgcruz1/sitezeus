@@ -14,6 +14,7 @@ let milhas = 'desligado';
 let radio = false;
 let som = false;
 let latitude = 0.0;
+let longitude = 0.0;
 
 // Configurações do broker MQTT
 const mqttBroker = 'mqtt://18.231.185.171';
@@ -93,13 +94,30 @@ app.get('/milhas', (req, res) => {
     res.send(latitude.toString());
   });
 
+  
+
   // Função para processar as mensagens MQTT recebidas
 function processMqttMessage(message) {
     if (message.startsWith('lat=')) {
-      const numbers = message.match(/\d+\.\d+/g);
+      const numbers = message.match(/-?\d+\.\d+/g);
       if (numbers && numbers.length > 0) {
         latitude = parseFloat(numbers[0]);
         console.log(latitude);
+      }
+    }
+};
+
+app.get('/longitude', (req, res) => {
+    res.send(longitude.toString());
+  });
+
+   // Função para processar as mensagens MQTT recebidas
+function processMqttMessage(message) {
+    if (message.startsWith('lat=')) {
+      const numbers = message.match(/-?\d+\.\d+/g);
+      if (numbers && numbers.length > 0) {
+        longitude = parseFloat(numbers[0]);
+        console.log(longitude);
       }
     }
 };
