@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mqtt = require('mqtt'); // Importa a biblioteca MQTT
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,50 +14,38 @@ let milhas = false;
 let radio = false;
 let som = false;
 
+// Configurações do broker MQTT
+
+const mqttBroker = 'mqtt://18.231.185.171';
+const mqttTopic = 'luz';
+
+
+// Cria um cliente MQTT
+const client = mqtt.connect(mqttBroker);
+
+// Função para publicar mensagens MQTT
+function publishToMqtt(message) {
+  client.publish(mqttTopic, message);
+}
+
 app.get('/statusLuz', (req, res) => {
   res.send(statusLuz);
 });
 
 app.post('/statusLuz', (req, res) => {
   statusLuz = (statusLuz === 'desligado') ? 'ligado' : 'desligado';
+
+  // Envia a mensagem MQTT com base no valor atualizado de statusLuz
+  if (statusLuz === 'ligado') {
+    publishToMqtt('l1');
+  } else {
+    publishToMqtt('l2');
+  }
+
   res.send(statusLuz);
 });
 
-app.post('/velocidade', (req, res) => {
-  velocidade = parseInt(req.body.velocidade);
-  res.send('Número atualizado com sucesso!');
-});
-
-app.get('/velocidade', (req, res) => {
-  res.send(velocidade.toString());
-});
-
-app.get('/milhas', (req, res) => {
-  res.send(milhas.toString());
-});
-
-app.post('/milhas', (req, res) => {
-  milhas = !milhas;
-  res.send(milhas.toString());
-});
-
-app.get('/radio', (req, res) => {
-  res.send(radio.toString());
-});
-
-app.post('/radio', (req, res) => {
-  radio = !radio;
-  res.send(radio.toString());
-});
-
-app.get('/som', (req, res) => {
-  res.send(som.toString());
-});
-
-app.post('/som', (req, res) => {
-  som = !som;
-  res.send(som.toString());
-});
+// Resto do seu código...
 
 app.listen(3000, () => {
   console.log('A API está rodando na porta 3000.');
