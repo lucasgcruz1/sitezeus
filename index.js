@@ -113,7 +113,7 @@ app.get('/longitude', (req, res) => {
 
    // Função para processar as mensagens MQTT recebidas
 function processMqttMessage(message) {
-    if (message.startsWith('lat=')) {
+    if (message.startsWith('long=')) {
       const numbers = message.match(/-?\d+\.\d+/g);
       if (numbers && numbers.length > 0) {
         longitude = parseFloat(numbers[0]);
