@@ -79,9 +79,9 @@ app.get('/milhas', (req, res) => {
   
     // Envia a mensagem MQTT com base no valor atualizado de statusLuz
     if (milhas === 'ligado') {
-      publishToMqtt('l1');
+      publishToMqtt('m1');
     } else {
-      publishToMqtt('l2');
+      publishToMqtt('m2');
     }
   
     res.send(milhas);
