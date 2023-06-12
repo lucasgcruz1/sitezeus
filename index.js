@@ -98,21 +98,33 @@ app.get('/milhas', (req, res) => {
 
   // Função para processar as mensagens MQTT recebidas
 function processMqttMessage(message) {
-    if (message.startsWith('lat=')) {
-      const numbers = message.match(/-?\d+\.\d+/g);
-      if (numbers && numbers.length > 0) {
-        latitude = parseFloat(numbers[0]);
-        console.log(latitude);
-      }
-    };
-    if (message.startsWith('long=')) {
-        const numbers = message.match(/-?\d+\.\d+/g);
-        if (numbers && numbers.length > 0) {
-          longitude = parseFloat(numbers[0]);
-          console.log(longitude);
-        }
-      };
-};
+  if (message === 'l1') {
+    statusLuz = 'ligado';
+  } else if (message === 'l2') {
+    statusLuz = 'desligado';
+  }
+  if (message === 'm1') {
+    milhas = 'ligado';
+  } else if (message === 'm2') {
+    milhas = 'desligado';
+  }
+
+  if (message.startsWith('lat=')) {
+    const numbers = message.match(/-?\d+\.\d+/g);
+    if (numbers && numbers.length > 0) {
+      latitude = parseFloat(numbers[0]);
+      console.log(latitude);
+    }
+  }
+
+  if (message.startsWith('long=')) {
+    const numbers = message.match(/-?\d+\.\d+/g);
+    if (numbers && numbers.length > 0) {
+      longitude = parseFloat(numbers[0]);
+      console.log(longitude);
+    }
+  }
+}
 
 app.get('/longitude', (req, res) => {
     res.send(longitude.toString());
